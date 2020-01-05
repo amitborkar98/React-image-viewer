@@ -33,42 +33,45 @@ class Login extends Component{
     loginClickHandler = () => {
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+        
     }
 
     render(){
         return(
             <div>
                 <Header/>
-                <div className="card">
-                <Card >
-                    <div className="content">
-                        <CardContent >
-                            <Typography gutterBottom variant="h5" component="h2">
-                                LOGIN
-                            </Typography>
-                            <br />
-                            <div className="input">
-                            <FormControl required>
-                                <InputLabel htmlFor="username">Username</InputLabel>
-                                <Input id="username"  username={this.state.username} onChange={this.usernameChangeHandler}/>
-                                <FormHelperText className={this.state.usernameRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
-                            <br /><br />
-                            <FormControl required >
-                                <InputLabel  htmlFor="password">Password</InputLabel>
-                                <Input id="password" type="password" password={this.state.password} onChange={this.passwordChangeHandler}/>
-                                <FormHelperText className={this.state.passwordRequired}>
-                                    <span className="red">required</span>
-                                </FormHelperText>
-                            </FormControl>
+                <div className="main">
+                    <div className="card">
+                        <Card >
+                            <div className="content">
+                                <CardContent >
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        LOGIN
+                                    </Typography>
+                                    <br />
+                                    <div className="input">
+                                    <FormControl required>
+                                        <InputLabel htmlFor="username">Username</InputLabel>
+                                        <Input id="username"  username={this.state.username} onChange={this.usernameChangeHandler}/>
+                                        <FormHelperText className={this.state.usernameRequired}>
+                                            <span className="red">required</span>
+                                        </FormHelperText>
+                                    </FormControl>
+                                    <br /><br />
+                                    <FormControl required >
+                                        <InputLabel  htmlFor="password">Password</InputLabel>
+                                        <Input id="password" type="password" password={this.state.password} onChange={this.passwordChangeHandler}/>
+                                        <FormHelperText className={this.state.passwordRequired}>
+                                            <span className="red">required</span>
+                                        </FormHelperText>
+                                    </FormControl>
+                                    </div>
+                                    <br /><br />
+                                    <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
+                                </CardContent>   
                             </div>
-                            <br /><br />
-                            <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
-                        </CardContent>   
+                        </Card>
                     </div>
-                </Card>
                 </div>
             </div>
         )

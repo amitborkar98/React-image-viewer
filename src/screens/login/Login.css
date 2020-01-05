@@ -1,5 +1,12 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .card{
-    margin: 40px 550px;
+    width: 30%;
+    margin-top: 40px;
 }
 
 .content{
@@ -20,6 +27,6 @@
 }
 
 .red {
-    color: red;
-    
+    color: red;   
 }
+
