@@ -1,0 +1,25 @@
+.card{
+    margin: 40px 550px;
+}
+
+.content{
+   margin :20px 40px;
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;
+    
+}
