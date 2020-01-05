@@ -17,10 +17,24 @@ class Login extends Component{
         this.state = {
             usernameRequired: "dispNone",
             username: "",
-            loginPasswordRequired: "dispNone",
-            loginPassword: ""
+            passwordRequired: "dispNone",
+            password: ""
         }
     }
+
+    usernameChangeHandler = (e) => {
+        this.setState({ username: e.target.value });
+    }
+
+    passwordChangeHandler = (e) => {
+        this.setState({ password: e.target.value });
+    }
+
+    loginClickHandler = () => {
+        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+    }
+
     render(){
         return(
             <div>
@@ -36,22 +50,22 @@ class Login extends Component{
                             <div className="input">
                             <FormControl required>
                                 <InputLabel htmlFor="username">Username</InputLabel>
-                                <Input id="username" />
+                                <Input id="username"  username={this.state.username} onChange={this.usernameChangeHandler}/>
                                 <FormHelperText className={this.state.usernameRequired}>
                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl>
                             <br /><br />
                             <FormControl required >
-                                <InputLabel type="password" htmlFor="password">Password</InputLabel>
-                                <Input id="password" />
-                                <FormHelperText className={this.state.loginPasswordRequired}>
+                                <InputLabel  htmlFor="password">Password</InputLabel>
+                                <Input id="password" type="password" password={this.state.password} onChange={this.passwordChangeHandler}/>
+                                <FormHelperText className={this.state.passwordRequired}>
                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl>
                             </div>
                             <br /><br />
-                            <Button variant="contained" color="primary" >LOGIN</Button>
+                            <Button variant="contained" color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
                         </CardContent>   
                     </div>
                 </Card>
