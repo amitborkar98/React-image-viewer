@@ -38,8 +38,8 @@ class Login extends Component{
         let username = "username";
         let token = "8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784";
 
-        this.state.password === password && this.state.username === username ? this.setState({ incorrect: "dispNone" }) : this.state.username === "" || this.state.password === "" ? this.setState({ incorrect: "dispNone" }) :this.setState({ incorrect: "dispBlock" });
-
+        this.state.password === password && this.state.username === username ? this.props.history.push('home/') : this.state.username === "" || this.state.password === "" ? this.setState({ incorrect: "dispNone" }) : this.setState({ incorrect: "dispBlock" });
+        
     }
 
     render(){
