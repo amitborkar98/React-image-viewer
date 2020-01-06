@@ -19,7 +19,8 @@ class Login extends Component{
             username: "",
             passwordRequired: "dispNone",
             password: "",
-            incorrect: "dispNone"
+            incorrect: "dispNone",
+            loggedIn:  sessionStorage.getItem("access-token") == null ? false : true
         }
     }
 
@@ -37,9 +38,20 @@ class Login extends Component{
         let password = "password";
         let username = "username";
         let token = "8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784";
-
-        this.state.password === password && this.state.username === username ? this.props.history.push('home') : this.state.username === "" || this.state.password === "" ? this.setState({ incorrect: "dispNone" }) : this.setState({ incorrect: "dispBlock" });
-        
+        if (this.state.password === password && this.state.username === username) {
+            sessionStorage.setItem("access-token", token);
+            this.setState({ loggedIn: true });
+            console.log(this.state.loggedIn);
+            this.props.history.push('home');
+          }
+          else{
+              if(this.state.username === "" || this.state.password === ""){
+                this.setState({ incorrect: "dispNone" });
+              }
+              else{
+                this.setState({ incorrect: "dispBlock" });
+              }
+          }
     }
 
     render(){
