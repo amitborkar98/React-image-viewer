@@ -5,7 +5,7 @@ class Home extends Component{
     render(){
         return(
             <div>
-                <Header/>
+                <Header id={this.props.match.params.id} more="true"/>
             </div>
         );
     }

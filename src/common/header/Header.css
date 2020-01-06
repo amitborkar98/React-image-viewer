@@ -9,3 +9,21 @@
     font-size: 18px;
     float: left;
 }
+
+.search-box{
+    float: right;
+}
+
+.pro-pic{
+    float: right;
+    background-color: #fff;
+    margin-left:20px;
+    margin-top: 3px;
+}
+
+.a{
+    background-color: blue;
+    border-radius: 4px;
+    width: 300px;
+    background-color: #c0c0c0;
+}
