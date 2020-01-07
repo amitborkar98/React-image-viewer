@@ -41,7 +41,6 @@ class Login extends Component{
         if (this.state.password === password && this.state.username === username) {
             sessionStorage.setItem("access-token", token);
             this.setState({ loggedIn: true });
-            console.log(this.state.loggedIn);
             this.props.history.push('home');
           }
           else{
