@@ -15,114 +15,93 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 
 class Home extends Component{
+
+    constructor(){
+        super();
+        this.state={
+            endpoint1: []
+        }
+
+    }
+
+    UNSAFE_componentWillMount(){
+        let data = null;
+        let xhr = new XMLHttpRequest();
+        let that = this;
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {   
+                   
+                that.setState({
+                    endpoint1 : JSON.parse(this.responseText).data
+                });
+                console.log(that.state.endpoint1);
+            }
+        });
+        xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
+        xhr.send(data);
+
+    }
+
     render(){
         return(
             <div>
                 <Header id={this.props.match.params.id} more="true"/>
 
                 <div className="container">
-                    
-                    <Card className="cards-layout">
+                    {this.state.endpoint1.map(post => (
+                    <Card className="cards-layout" key={"post" + post.id}>
                         <div className="posts">
                             <div className="card-header">
                                 <CardHeader 
                                     avatar={
                                     <Avatar aria-label="recipe" className="avatar">
-                                        R
+                                      <img  src ={post.user.profile_picture} alt="g"/>
                                     </Avatar>
                                     }
-                                    title="username"
-                                    subheader="September 14, 2016"
+                                    title={post.user.username}
+                                    subheader={post.created_time}
                                 />
                             </div>
                             <CardContent>
-                                Post1 
-                                <CardMedia
-                                    className="media"
-                                    image="../../assests/"
-                                    title="Paella dish"
-                                />      
+                                <div className="media">    
+                                    <CardMedia style={{height: post.images.standard_resolution.height , 
+                                                        width: post.images.standard_resolution.width}}
+                                        image={post.images.standard_resolution.url}
+                                    /> 
+                                </div>     
                                 <hr/>
                                 <Typography variant="body1" component="p">
-                                    Add 1 cup of frozen peas along with the mussels, if you like.
+                                    {post.caption.text}
                                 </Typography>
                                 <Typography variant="body2" component="p" className="hastag">
-                                    #football
+                                    #{post.tags[0]}<br/>#{post.tags[1]}
                                 </Typography> 
                                 <br/>    
                                 <div className="likes">
                                     <FavoriteIcon/>
-                                    <FavoriteBorderIcon/><span>7 Likes</span>
+                                    <FavoriteBorderIcon/>
+                                    <span>
+                                        {post.likes.count} Likes
+                                    </span>
                                 </div>
-                                <br/>
                                 <Typography variant="body2" component="p" >
-                                    new added
+                                    
                                 </Typography> 
                                 <br/>
                                 <div className="comments">
                                     <FormControl className="control">
                                         <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                        <Input id="movieName" />
+                                        <Input />
                                     </FormControl>
-                                    <Button variant="contained" color="primary" >
+                                    <Button variant="contained" color="primary" style={{marginLeft:20}}>
                                         ADD
                                     </Button>
                                 </div>
                             </CardContent>
                         </div>   
                     </Card>
-                    
+                    ))}
 
-                    <Card className="cards-layout">
-                        <div className="posts">
-                            <div className="card-header">
-                                <CardHeader 
-                                    avatar={
-                                    <Avatar aria-label="recipe" className="avatar">
-                                        R
-                                    </Avatar>
-                                    }
-                                    title="username"
-                                    subheader="September 14, 2016"
-                                />
-                            </div>
-                            <CardContent>
-                                Post1 
-                                <CardMedia
-                                    className="media"
-                                    image="../../assests/"
-                                    title="Paella dish"
-                                />      
-                                <hr/>
-                                <Typography variant="body1" component="p">
-                                    Add 1 cup of frozen peas along with the mussels, if you like.
-                                </Typography>
-                                <Typography variant="body2" component="p" className="hastag">
-                                    #football
-                                </Typography> 
-                                <br/>    
-                                <div className="likes">
-                                    <FavoriteIcon/>
-                                    <FavoriteBorderIcon/><span>7 Likes</span>
-                                </div>
-                                <br/>
-                                <Typography variant="body2" component="p" >
-                                    new added
-                                </Typography> 
-                                <br/>
-                                <div className="comments">
-                                    <FormControl className="control">
-                                        <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                        <Input id="movieName" />
-                                    </FormControl>
-                                    <Button variant="contained" color="primary" >
-                                        ADD
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </div>   
-                    </Card>
-                    
                 </div>
             </div>
         );

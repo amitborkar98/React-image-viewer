@@ -1,17 +1,18 @@
 .container{
     display: flex;
     flex-direction: row;
-    margin : 80px 100px;
+    margin : 20px 35px;
     flex-wrap: wrap;
 }
 
 .cards-layout{
-    width: 600px ;
-    margin: 20px 20px;
+    width: 700px ;
+    margin: 20px 10px;
+    height: 0%;
 }
 
 .posts{
-    margin: 5px;
+    margin: 5px 20px;
 }
 
 .card-header{
@@ -24,8 +25,8 @@
 }
 
 .media{
-    height: 0;
-    padding-top: '56.25%'; 
+   display: flex;
+   justify-content: center;
 }
 
 hr{
@@ -49,6 +50,11 @@ hr{
 }
 
 .control{
-    width: 500px;
-    margin-right: 20px;
+    width: 900px;
+    
+}
+
+.img{
+  width: 50%;
+  height: 1%;
 }

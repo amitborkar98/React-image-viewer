@@ -49,7 +49,7 @@ class Header extends Component{
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
                                 </div>
-                                <Input disableUnderline='true'
+                                <Input disableUnderline={true}
                                     placeholder="Search…"
                                     classes={{
                                         root: classes.inputRoot,
