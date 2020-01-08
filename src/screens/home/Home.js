@@ -21,7 +21,6 @@ class Home extends Component{
         this.state={
             endpoint1: []
         }
-
     }
 
     UNSAFE_componentWillMount(){
@@ -65,23 +64,27 @@ class Home extends Component{
                             <CardContent>
                                 <div className="media">    
                                     <CardMedia style={{height: post.images.standard_resolution.height , 
-                                                        width: post.images.standard_resolution.width}}
+                                                        width: post.images.standard_resolution.width,
+                                                    }}
                                         image={post.images.standard_resolution.url}
                                     /> 
                                 </div>     
                                 <hr/>
                                 <Typography variant="body1" component="p">
-                                    {post.caption.text}
+                                    { post.caption.text.slice(0,post.caption.text.search('#')) }
                                 </Typography>
                                 <Typography variant="body2" component="p" className="hastag">
-                                    #{post.tags[0]}<br/>#{post.tags[1]}
+                                    { post.tags.map((value) => {
+                                       return <div style={{marginRight:5}}>#{value}</div> 
+                                    })}
                                 </Typography> 
                                 <br/>    
                                 <div className="likes">
                                     <FavoriteIcon/>
                                     <FavoriteBorderIcon/>
-                                    <span>
-                                        {post.likes.count} Likes
+                                    <span>{post.likes.count < 2 ? 
+                                        <div>{post.likes.count} Like</div> : <div>{post.likes.count} Likes</div>
+                                        }
                                     </span>
                                 </div>
                                 <Typography variant="body2" component="p" >

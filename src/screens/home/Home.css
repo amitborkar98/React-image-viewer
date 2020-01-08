@@ -35,6 +35,9 @@ hr{
 
 .hastag{
     color: lightskyblue;
+    display: flex;
+    flex-direction: row;
+    margin-right: 5px;
 }
 
 .likes{
