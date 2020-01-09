@@ -34,6 +34,31 @@ const styles = theme => ({
 });
 
 class Header extends Component{
+    
+    constructor(){
+        super();
+        this.state={
+            endpoint2: []
+        }
+    }
+
+    UNSAFE_componentWillMount(){
+        let data = null;
+        let xhr = new XMLHttpRequest();
+        let that = this;
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {   
+                   
+                that.setState({
+                    endpoint2 : JSON.parse(this.responseText).data
+                });
+                console.log(that.state.endpoint2);
+            }
+        });
+        xhr.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
+        xhr.send(data);
+    }
+    
     render(){
         const { classes } = this.props;
         return(
@@ -43,7 +68,9 @@ class Header extends Component{
                     {this.props.more === "true" ?
                         <div>
                             <div className="pro-pic">   
-                                <IconButton/>
+                                <IconButton className="a">
+                                   
+                                </IconButton>
                             </div> 
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>

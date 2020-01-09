@@ -19,7 +19,9 @@ class Home extends Component{
     constructor(){
         super();
         this.state={
-            endpoint1: []
+            endpoint1: [],
+            likeIcon: "dispBlock",
+            likedIcon: "dispNone",
         }
     }
 
@@ -31,14 +33,35 @@ class Home extends Component{
             if (this.readyState === 4) {   
                    
                 that.setState({
-                    endpoint1 : JSON.parse(this.responseText).data
+                    endpoint1 : JSON.parse(this.responseText).data 
                 });
                 console.log(that.state.endpoint1);
             }
         });
         xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
         xhr.send(data);
+    }
 
+    likeClickHandler=(id)=>{
+        let postList = this.state.endpoint1;
+        postList.forEach(function(post, index){
+            if(post.id === id){
+                post.likes.count += 1;
+                this.setState({likeIcon: "dispNone"});
+                this.setState({likedIcon: "dispBlock"});
+            }
+        }, this);
+    }
+
+    likedClickHandler=(id)=>{
+        let postList = this.state.endpoint1;
+        postList.forEach(function(post, index){
+            if(post.id === id){
+                post.likes.count -= 1;
+                this.setState({likeIcon: "dispBlock"});
+                this.setState({likedIcon: "dispNone"});
+            }
+        }, this);
     }
 
     render(){
@@ -54,11 +77,11 @@ class Home extends Component{
                                 <CardHeader 
                                     avatar={
                                     <Avatar aria-label="recipe" className="avatar">
-                                      <img  src ={post.user.profile_picture} alt="g"/>
+                                      <img src ={post.user.profile_picture} alt="g"/>
                                     </Avatar>
                                     }
                                     title={post.user.username}
-                                    subheader={post.created_time}
+                                    subheader={post.created_time} 
                                 />
                             </div>
                             <CardContent>
@@ -74,16 +97,22 @@ class Home extends Component{
                                     { post.caption.text.slice(0,post.caption.text.search('#')) }
                                 </Typography>
                                 <Typography variant="body2" component="p" className="hastag">
-                                    { post.tags.map((value) => {
-                                       return <div style={{marginRight:5}}>#{value}</div> 
+                                    { post.tags.map((value,key) => {
+                                       return <span key={"tag" + key} style={{marginRight:5}}>  #{value}  </span> 
                                     })}
                                 </Typography> 
                                 <br/>    
                                 <div className="likes">
-                                    <FavoriteIcon/>
-                                    <FavoriteBorderIcon/>
-                                    <span>{post.likes.count < 2 ? 
-                                        <div>{post.likes.count} Like</div> : <div>{post.likes.count} Likes</div>
+                                    <div className={this.state.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
+                                        <FavoriteBorderIcon />
+                                    </div>
+                                    <div className={this.state.likedIcon} >
+                                        <FavoriteIcon style={{color:"red"}}  onClick={() => this.likedClickHandler(post.id)}/>
+                                    </div>
+                                    <span style={{marginLeft:10, marginBottom:8}}>
+                                        {
+                                        post.likes.count < 2 ? <div>{parseInt(post.likes.count)} like </div> :
+                                         <div>{parseInt(post.likes.count)} likes</div>
                                         }
                                     </span>
                                 </div>

@@ -20,8 +20,9 @@
     align-items: center;
 }
 
-.avatar{
-    background-color: yellow;
+img{
+    height: 80px;
+    width: 45px;
 }
 
 .media{
@@ -37,7 +38,6 @@ hr{
     color: lightskyblue;
     display: flex;
     flex-direction: row;
-    margin-right: 5px;
 }
 
 .likes{
@@ -54,10 +54,12 @@ hr{
 
 .control{
     width: 900px;
-    
 }
 
-.img{
-  width: 50%;
-  height: 1%;
+.dispNone{
+    display: none;
+}
+
+.dispBlock{
+    display: block;
 }
