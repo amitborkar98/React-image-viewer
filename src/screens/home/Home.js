@@ -32,8 +32,14 @@ class Home extends Component{
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {   
                    
+                let list = JSON.parse(this.responseText).data;        
+                for(let i in list){
+                    list[i].likeIcon="dispBlock";
+                    list[i].likedIcon = "dispNone";
+                }
+         
                 that.setState({
-                    endpoint1 : JSON.parse(this.responseText).data 
+                    endpoint1 : list 
                 });
                 console.log(that.state.endpoint1);
             }
@@ -47,6 +53,8 @@ class Home extends Component{
         postList.forEach(function(post, index){
             if(post.id === id){
                 post.likes.count += 1;
+                post.likeIcon = "dispNone";
+                post.likedIcon = "dispBlock";
                 this.setState({likeIcon: "dispNone"});
                 this.setState({likedIcon: "dispBlock"});
             }
@@ -58,6 +66,8 @@ class Home extends Component{
         postList.forEach(function(post, index){
             if(post.id === id){
                 post.likes.count -= 1;
+                post.likeIcon = "dispBlock";
+                post.likedIcon = "dispNone";
                 this.setState({likeIcon: "dispBlock"});
                 this.setState({likedIcon: "dispNone"});
             }
@@ -103,11 +113,11 @@ class Home extends Component{
                                 </Typography> 
                                 <br/>    
                                 <div className="likes">
-                                    <div className={this.state.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
+                                    <div className={post.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
                                         <FavoriteBorderIcon />
                                     </div>
-                                    <div className={this.state.likedIcon} >
-                                        <FavoriteIcon style={{color:"red"}}  onClick={() => this.likedClickHandler(post.id)}/>
+                                    <div className={post.likedIcon}>
+                                        <FavoriteIcon style={{color:"red"}} onClick={() => this.likedClickHandler(post.id)}/>
                                     </div>
                                     <span style={{marginLeft:10, marginBottom:8}}>
                                         {
