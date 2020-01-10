@@ -44,6 +44,7 @@ hr{
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 10px 0px;
 }
 
 .comments{
@@ -62,4 +63,9 @@ hr{
 
 .dispBlock{
     display: block;
+}
+
+.comments-section{
+    display: flex;
+    flex-direction: row;
 }

@@ -22,6 +22,9 @@ class Home extends Component{
             endpoint1: [],
             likeIcon: "dispBlock",
             likedIcon: "dispNone",
+            comment: "",
+            commentArea:"dispNone",
+            
         }
     }
 
@@ -36,6 +39,8 @@ class Home extends Component{
                 for(let i in list){
                     list[i].likeIcon="dispBlock";
                     list[i].likedIcon = "dispNone";
+                    list[i].post_comments = "dispNone" ;
+                    list[i].commentContent= ""
                 }
          
                 that.setState({
@@ -72,6 +77,23 @@ class Home extends Component{
                 this.setState({likedIcon: "dispNone"});
             }
         }, this);
+    }
+
+    commentChangeHandler = (e) => {
+        this.setState({ comment : e.target.value });
+    }
+
+    addCommentHandler = (id) =>{
+
+        let postList=this.state.endpoint1;
+        postList.forEach(function(post, index){
+            if(post.id === id){
+                post.post_comments="dispBlock";
+                post.commentContent=this.state.comment;
+                this.setState({commentArea:"dispBlock"});
+            }
+        }, this);
+
     }
 
     render(){
@@ -111,7 +133,7 @@ class Home extends Component{
                                        return <span key={"tag" + key} style={{marginRight:5}}>  #{value}  </span> 
                                     })}
                                 </Typography> 
-                                <br/>    
+                                  
                                 <div className="likes">
                                     <div className={post.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
                                         <FavoriteBorderIcon />
@@ -126,19 +148,26 @@ class Home extends Component{
                                         }
                                     </span>
                                 </div>
-                                <Typography variant="body2" component="p" >
-                                    
-                                </Typography> 
+
+
+                                <div className={post.post_comments}>
+                                    <div className="comments-section">
+                                        <span style={{fontWeight:"bold"}} className={this.state.commentArea}>{post.user.username}:</span> 
+                                        <span style={{marginLeft:5}}>{post.commentContent}</span>
+                                    </div> 
+                                </div>    
                                 <br/>
                                 <div className="comments">
                                     <FormControl className="control">
                                         <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                        <Input />
+                                        <Input comment={this.state.comment} onChange={this.commentChangeHandler}/>
                                     </FormControl>
-                                    <Button variant="contained" color="primary" style={{marginLeft:20}}>
+                                    <Button variant="contained" color="primary" style={{marginLeft:20}} onClick={() => this.addCommentHandler(post.id)}>
                                         ADD
                                     </Button>
                                 </div>
+
+
                             </CardContent>
                         </div>   
                     </Card>
