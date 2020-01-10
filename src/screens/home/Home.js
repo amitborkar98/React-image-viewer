@@ -31,15 +31,14 @@ class Home extends Component{
         let xhr = new XMLHttpRequest();
         let that = this;
         xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {   
-                   
+            if (this.readyState === 4) {     
                 let list = JSON.parse(this.responseText).data;        
                 for(let i in list){
                     list[i].likeIcon="dispBlock";
                     list[i].likedIcon = "dispNone";
-                    list[i].commentContent= []
+                    list[i].commentContent= [];
+                    list[i].date = new Date(parseInt(list[i].created_time) * 1000);
                 }
-         
                 that.setState({
                     endpoint1 : list 
                 });
@@ -112,7 +111,8 @@ class Home extends Component{
                                     </Avatar>
                                     }
                                     title={post.user.username}
-                                    subheader={post.created_time} 
+                                    subheader={(post.date.getMonth()+1)+"/"+post.date.getDate()+"/"+post.date.getFullYear()+" "
+                                                +post.date.getHours()+":"+post.date.getMinutes()+":"+post.date.getSeconds()} 
                                 />
                             </div>
                             <CardContent>
