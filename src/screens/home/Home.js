@@ -23,8 +23,6 @@ class Home extends Component{
             likeIcon: "dispBlock",
             likedIcon: "dispNone",
             comment: "",
-            commentArea:"dispNone",
-            
         }
     }
 
@@ -39,8 +37,7 @@ class Home extends Component{
                 for(let i in list){
                     list[i].likeIcon="dispBlock";
                     list[i].likedIcon = "dispNone";
-                    list[i].post_comments = "dispNone" ;
-                    list[i].commentContent= ""
+                    list[i].commentContent= []
                 }
          
                 that.setState({
@@ -55,7 +52,7 @@ class Home extends Component{
 
     likeClickHandler=(id)=>{
         let postList = this.state.endpoint1;
-        postList.forEach(function(post, index){
+        postList.forEach(function(post){
             if(post.id === id){
                 post.likes.count += 1;
                 post.likeIcon = "dispNone";
@@ -68,7 +65,7 @@ class Home extends Component{
 
     likedClickHandler=(id)=>{
         let postList = this.state.endpoint1;
-        postList.forEach(function(post, index){
+        postList.forEach(function(post){
             if(post.id === id){
                 post.likes.count -= 1;
                 post.likeIcon = "dispBlock";
@@ -84,23 +81,25 @@ class Home extends Component{
     }
 
     addCommentHandler = (id) =>{
-
-        let postList=this.state.endpoint1;
-        postList.forEach(function(post, index){
-            if(post.id === id){
-                post.post_comments="dispBlock";
-                post.commentContent=this.state.comment;
-                this.setState({commentArea:"dispBlock"});
-            }
-        }, this);
-
+        if(this.state.comment === ""){
+            alert("Cannot add Empty comment");
+        }
+        else{
+            let postList=this.state.endpoint1;
+            postList.forEach(function(post){
+                if(post.id === id){
+                    post.commentContent.push(this.state.comment);
+                    this.setState({comment: ""});
+                    
+                }
+            }, this);
+        }
     }
 
     render(){
         return(
             <div>
                 <Header id={this.props.match.params.id} more="true"/>
-
                 <div className="container">
                     {this.state.endpoint1.map(post => (
                     <Card className="cards-layout" key={"post" + post.id}>
@@ -109,7 +108,7 @@ class Home extends Component{
                                 <CardHeader 
                                     avatar={
                                     <Avatar aria-label="recipe" className="avatar">
-                                      <img src ={post.user.profile_picture} alt="g"/>
+                                      <img src ={post.user.profile_picture} alt={post.username}/>
                                     </Avatar>
                                     }
                                     title={post.user.username}
@@ -121,7 +120,7 @@ class Home extends Component{
                                     <CardMedia style={{height: post.images.standard_resolution.height , 
                                                         width: post.images.standard_resolution.width,
                                                     }}
-                                        image={post.images.standard_resolution.url}
+                                                    image={post.images.standard_resolution.url}
                                     /> 
                                 </div>     
                                 <hr/>
@@ -133,7 +132,6 @@ class Home extends Component{
                                        return <span key={"tag" + key} style={{marginRight:5}}>  #{value}  </span> 
                                     })}
                                 </Typography> 
-                                  
                                 <div className="likes">
                                     <div className={post.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
                                         <FavoriteBorderIcon />
@@ -144,18 +142,16 @@ class Home extends Component{
                                     <span style={{marginLeft:10, marginBottom:8}}>
                                         {
                                         post.likes.count < 2 ? <div>{parseInt(post.likes.count)} like </div> :
-                                         <div>{parseInt(post.likes.count)} likes</div>
+                                        <div>{parseInt(post.likes.count)} likes</div>
                                         }
                                     </span>
                                 </div>
-
-
-                                <div className={post.post_comments}>
-                                    <div className="comments-section">
-                                        <span style={{fontWeight:"bold"}} className={this.state.commentArea}>{post.user.username}:</span> 
-                                        <span style={{marginLeft:5}}>{post.commentContent}</span>
-                                    </div> 
-                                </div>    
+                                <div className="comments-section">
+                                    { post.commentContent.map((value,key) => {
+                                        return <span key={"comment" + key}>
+                                        <span style={{fontWeight:"bold"}}>{post.user.username}: </span>{value}</span> 
+                                    })}
+                                </div> 
                                 <br/>
                                 <div className="comments">
                                     <FormControl className="control">
@@ -166,8 +162,6 @@ class Home extends Component{
                                         ADD
                                     </Button>
                                 </div>
-
-
                             </CardContent>
                         </div>   
                     </Card>

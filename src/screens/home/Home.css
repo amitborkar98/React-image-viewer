@@ -44,7 +44,7 @@ hr{
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 10px 0px;
+    margin: 10px 0px 0px 0px;
 }
 
 .comments{
@@ -67,5 +67,5 @@ hr{
 
 .comments-section{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
