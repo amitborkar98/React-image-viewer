@@ -4,9 +4,11 @@ import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
-
       search: {
         position: 'relative',
         backgroundColor:'#c0c0c0',
@@ -32,8 +34,42 @@ const styles = theme => ({
       },
 });
 
+const StyledMenu = withStyles({
+    paper: {
+      border: '4px',
+      backgroundColor:'#ededed',
+    },
+  })(props => (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      {...props}
+    />
+  ));
+
+  const StyledMenuItem = withStyles(theme => ({
+    root: {
+      
+    },
+  }))(MenuItem);
+  
 class Header extends Component{
      
+    constructor(){
+        super();
+        this.state={
+            type: null,
+        }
+    }
+
     inputChangeHandler = (e) => {
         let newList=[];        
         for(let i in this.props.list){
@@ -44,6 +80,23 @@ class Header extends Component{
         this.props.callbackFromHome(newList);
     }
     
+    openHandler = (e) => {
+        this.setState({ type: e.currentTarget });
+    }
+    
+    closeHandler = () => {
+        this.setState({ type: null });
+    }
+    
+    accountHandler = () => {
+
+    }
+
+    logoutHandler = () => {
+        
+        //sessionStorage.removeItem("access-token");   
+    }
+
     render(){
         const { classes } = this.props;
         return(
@@ -53,23 +106,25 @@ class Header extends Component{
                     {this.props.more === "true" ?
                         <div>
                             <div className="pro-pic">   
-                                <IconButton size="medium" style={{backgroundColor:"yellow"}} >
-                                   
-                                </IconButton>
+                                <IconButton size="medium" style={{backgroundColor:"yellow"}} onClick={this.openHandler} >
+                                R </IconButton>  
                             </div> 
-                            
-                           {/*} <Menu
-                                id="simple-menu"
+                            <StyledMenu
+                                id="customized-menu"
+                                anchorEl={this.state.type}
                                 keepMounted
-
-                                onClose={handleClose}
+                                open={Boolean(this.state.type)}
+                                onClose={this.closeHandler}
                             >
-                                <MenuItem >Profile</MenuItem>
-                                <MenuItem>My account</MenuItem>
-                                <MenuItem >Logout</MenuItem>
-                            </Menu>*/}
+                                <StyledMenuItem>
+                                    <ListItemText primary="My Account" onClick={this.accountHandler} />
+                                </StyledMenuItem>
+                                <hr style={{marginLeft:15,marginRight:15}}/>
+                                <StyledMenuItem>
+                                    <ListItemText primary="Logout" onClick={this.logoutHandler} />
+                                </StyledMenuItem>
+                            </StyledMenu>
 
-                            
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
