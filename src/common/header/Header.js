@@ -12,9 +12,9 @@ const styles = theme => ({
       search: {
         position: 'relative',
         backgroundColor:'#c0c0c0',
-        borderRadius: 4,
+        borderRadius: '4px',
         marginLeft: 0,
-        width: '300',
+        width: '300px',
         float: 'right'
       },
       searchIcon: {
@@ -93,8 +93,8 @@ class Header extends Component{
     }
 
     logoutHandler = () => {
-        
-        //sessionStorage.removeItem("access-token");   
+        sessionStorage.removeItem("access-token");  
+        this.props.history.push('/');
     }
 
     render(){
@@ -117,7 +117,7 @@ class Header extends Component{
                                 onClose={this.closeHandler}
                             >
                                 <StyledMenuItem>
-                                    <ListItemText primary="My Account" onClick={this.accountHandler} />
+                                    <ListItemText primary="My Account" onClick={this.accountHandler}/> 
                                 </StyledMenuItem>
                                 <hr style={{marginLeft:15,marginRight:15}}/>
                                 <StyledMenuItem>

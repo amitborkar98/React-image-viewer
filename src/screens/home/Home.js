@@ -120,7 +120,7 @@ class Home extends Component{
         return(
             <div>
                 <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback} 
-                pic={this.state.endpoint2.profile_picture}/>
+                pic={this.state.endpoint2.profile_picture} history={this.props.history}  />
                 <div className="container">
                     {this.state.endpoint1.map(post => (
                     <Card className="cards-layout" key={"post" + post.id}>
