@@ -89,7 +89,7 @@ class Header extends Component{
     }
     
     accountHandler = () => {
-
+        this.props.history.push('/profile');
     }
 
     logoutHandler = () => {
