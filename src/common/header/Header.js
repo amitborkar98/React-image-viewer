@@ -5,7 +5,6 @@ import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
 
-
 const styles = theme => ({
 
       search: {
@@ -38,7 +37,7 @@ class Header extends Component{
     constructor(){
         super();
         this.state={
-            endpoint2: []
+            endpoint2: [] 
         }
     }
 
@@ -48,15 +47,25 @@ class Header extends Component{
         let that = this;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {   
-                   
                 that.setState({
                     endpoint2 : JSON.parse(this.responseText).data
                 });
-                console.log(that.state.endpoint2);
+                //console.log(that.state.endpoint2);
             }
         });
         xhr.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
         xhr.send(data);
+    }
+    
+    inputChangeHandler = (e) => {
+        let newList=[];        
+        for(let i in this.props.list){
+            if(this.props.list[i].caption.text.slice(0,this.props.list[i].caption.text.search('#')).search(e.target.value) > -1){
+                newList.push(this.props.list[i]);
+           }
+        }
+        console.log(newList);
+        this.props.callbackFromHome(newList);
     }
     
     render(){
@@ -68,10 +77,23 @@ class Header extends Component{
                     {this.props.more === "true" ?
                         <div>
                             <div className="pro-pic">   
-                                <IconButton className="a">
+                                <IconButton size="medium" style={{backgroundColor:"yellow"}} >
                                    
                                 </IconButton>
                             </div> 
+                            
+                           {/*} <Menu
+                                id="simple-menu"
+                                keepMounted
+
+                                onClose={handleClose}
+                            >
+                                <MenuItem >Profile</MenuItem>
+                                <MenuItem>My account</MenuItem>
+                                <MenuItem >Logout</MenuItem>
+                            </Menu>*/}
+
+                            
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
@@ -83,6 +105,7 @@ class Header extends Component{
                                         input: classes.inputInput,
                                     }}
                                     inputProps={{ 'aria-label': 'search' }}
+                                    onChange={this.inputChangeHandler}
                                 />
                             </div>
                         </div>

@@ -23,6 +23,7 @@ class Home extends Component{
             likeIcon: "dispBlock",
             likedIcon: "dispNone",
             comment: "",
+            postList: []
         }
     }
 
@@ -42,7 +43,10 @@ class Home extends Component{
                 that.setState({
                     endpoint1 : list 
                 });
-                console.log(that.state.endpoint1);
+                that.setState({
+                    postList : list
+                });
+                //console.log(that.state.endpoint1);
             }
         });
         xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
@@ -89,16 +93,19 @@ class Home extends Component{
                 if(post.id === id){
                     post.commentContent.push(this.state.comment);
                     this.setState({comment: ""});
-                    
                 }
             }, this);
         }
     }
 
+    myCallback = (filteredPost) => {
+        this.setState({endpoint1: filteredPost});
+    }
+
     render(){
         return(
             <div>
-                <Header id={this.props.match.params.id} more="true"/>
+                <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback}/>
                 <div className="container">
                     {this.state.endpoint1.map(post => (
                     <Card className="cards-layout" key={"post" + post.id}>
@@ -129,7 +136,7 @@ class Home extends Component{
                                 </Typography>
                                 <Typography variant="body2" component="p" className="hastag">
                                     { post.tags.map((value,key) => {
-                                       return <span key={"tag" + key} style={{marginRight:5}}>  #{value}  </span> 
+                                       return <span key={"tag" + key} style={{marginRight:5}}>#{value} </span> 
                                     })}
                                 </Typography> 
                                 <div className="likes">
@@ -156,7 +163,7 @@ class Home extends Component{
                                 <div className="comments">
                                     <FormControl className="control">
                                         <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                        <Input comment={this.state.comment} onChange={this.commentChangeHandler}/>
+                                        <Input comment={this.state.comment} onChange={this.commentChangeHandler} />
                                     </FormControl>
                                     <Button variant="contained" color="primary" style={{marginLeft:20}} onClick={() => this.addCommentHandler(post.id)}>
                                         ADD
