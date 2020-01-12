@@ -26,6 +26,7 @@ class Home extends Component{
             comment: "",
             postList: []
         }
+
     }
 
     UNSAFE_componentWillMount(){
@@ -36,9 +37,9 @@ class Home extends Component{
             if (this.readyState === 4) {     
                 let list = JSON.parse(this.responseText).data;        
                 for(let i in list){
-                    list[i].likeIcon="dispBlock";
+                    list[i].likeIcon = "dispBlock";
                     list[i].likedIcon = "dispNone";
-                    list[i].commentContent= [];
+                    list[i].commentContent = [];
                     list[i].date = new Date(parseInt(list[i].created_time) * 1000);
                 }
                 that.setState({
@@ -47,12 +48,14 @@ class Home extends Component{
                 that.setState({
                     postList : list
                 });
-                //console.log(that.state.endpoint1);
             }
         });
+        if(sessionStorage.getItem("access-token")!==null){
         xhr1.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
         xhr1.send(data1);
-        
+        }
+
+
         let data2 = null;
         let xhr2 = new XMLHttpRequest();
         xhr2.addEventListener("readystatechange", function () {
@@ -60,11 +63,12 @@ class Home extends Component{
                 that.setState({
                     endpoint2 : JSON.parse(this.responseText).data
                 });
-                //console.log(that.state.endpoint2);
             }
         });
+        if(sessionStorage.getItem("access-token")!==null){
         xhr2.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
         xhr2.send(data2);
+        }
     }
 
     likeClickHandler=(id)=>{
@@ -119,77 +123,81 @@ class Home extends Component{
     render(){
         return(
             <div>
-                <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback} 
-                pic={this.state.endpoint2.profile_picture} history={this.props.history}  />
-                <div className="container">
-                    {this.state.endpoint1.map(post => (
-                    <Card className="cards-layout" key={"post" + post.id}>
-                        <div className="posts">
-                            <div className="card-header">
-                                <CardHeader 
-                                    avatar={
-                                    <Avatar aria-label="recipe" className="avatar">
-                                      <img src ={post.user.profile_picture} alt={post.username}/>
-                                    </Avatar>
-                                    }
-                                    title={post.user.username}
-                                    subheader={(post.date.getMonth()+1)+"/"+post.date.getDate()+"/"+post.date.getFullYear()+" "
-                                                +post.date.getHours()+":"+post.date.getMinutes()+":"+post.date.getSeconds()} 
-                                />
-                            </div>
-                            <CardContent>
-                                <div className="media">    
-                                    <CardMedia style={{height: post.images.standard_resolution.height , 
-                                                        width: post.images.standard_resolution.width,
-                                                    }}
-                                                    image={post.images.standard_resolution.url}
-                                    /> 
-                                </div>     
-                                <hr/>
-                                <Typography variant="body1" component="p">
-                                    { post.caption.text.slice(0,post.caption.text.search('#')) }
-                                </Typography>
-                                <Typography variant="body2" component="p" className="hastag">
-                                    { post.tags.map((value,key) => {
-                                       return <span key={"tag" + key} style={{marginRight:5}}>#{value} </span> 
-                                    })}
-                                </Typography> 
-                                <div className="likes">
-                                    <div className={post.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
-                                        <FavoriteBorderIcon />
-                                    </div>
-                                    <div className={post.likedIcon}>
-                                        <FavoriteIcon style={{color:"red"}} onClick={() => this.likedClickHandler(post.id)}/>
-                                    </div>
-                                    <span style={{marginLeft:10, marginBottom:8}}>
-                                        {
-                                        post.likes.count < 2 ? <div>{post.likes.count} like </div> :
-                                        <div>{post.likes.count} likes</div>
+                {sessionStorage.getItem("access-token")!==null ?
+                <div>
+                    <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback} 
+                    pic={this.state.endpoint2.profile_picture} history={this.props.history}  />
+                    <div className="container">
+                        {this.state.endpoint1.map(post => (
+                        <Card className="cards-layout" key={"post" + post.id}>
+                            <div className="posts">
+                                <div className="card-header">
+                                    <CardHeader 
+                                        avatar={
+                                        <Avatar aria-label="recipe" className="avatar">
+                                        <img src ={post.user.profile_picture} alt={post.username}/>
+                                        </Avatar>
                                         }
-                                    </span>
+                                        title={post.user.username}
+                                        subheader={(post.date.getMonth()+1)+"/"+post.date.getDate()+"/"+post.date.getFullYear()+" "
+                                                    +post.date.getHours()+":"+post.date.getMinutes()+":"+post.date.getSeconds()} 
+                                    />
                                 </div>
-                                <div className="comments-section">
-                                    { post.commentContent.map((value,key) => {
-                                        return <span key={"comment" + key}>
-                                        <span style={{fontWeight:"bold"}}>{post.user.username}: </span>{value}</span> 
-                                    })}
-                                </div> 
-                                <br/>
-                                <div className="comments">
-                                    <FormControl className="control">
-                                        <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                        <Input comment={this.state.comment} onChange={this.commentChangeHandler} />
-                                    </FormControl>
-                                    <Button variant="contained" color="primary" style={{marginLeft:20}} onClick={() => this.addCommentHandler(post.id)}>
-                                        ADD
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </div>   
-                    </Card>
-                    ))}
+                                <CardContent>
+                                    <div className="media">    
+                                        <CardMedia style={{height: post.images.standard_resolution.height , 
+                                                            width: post.images.standard_resolution.width,
+                                                        }}
+                                                        image={post.images.standard_resolution.url}
+                                        /> 
+                                    </div>     
+                                    <hr/>
+                                    <Typography variant="body1" component="p">
+                                        { post.caption.text.slice(0,post.caption.text.search('#')) }
+                                    </Typography>
+                                    <Typography variant="body2" component="p" className="hastag">
+                                        { post.tags.map((value,key) => {
+                                        return <span key={"tag" + key} style={{marginRight:5}}>#{value} </span> 
+                                        })}
+                                    </Typography> 
+                                    <div className="likes">
+                                        <div className={post.likeIcon} onClick={() => this.likeClickHandler(post.id)}>
+                                            <FavoriteBorderIcon />
+                                        </div>
+                                        <div className={post.likedIcon}>
+                                            <FavoriteIcon style={{color:"red"}} onClick={() => this.likedClickHandler(post.id)}/>
+                                        </div>
+                                        <span style={{marginLeft:10, marginBottom:8}}>
+                                            {
+                                            post.likes.count < 2 ? <div>{post.likes.count} like </div> :
+                                            <div>{post.likes.count} likes</div>
+                                            }
+                                        </span>
+                                    </div>
+                                    <div className="comments-section">
+                                        { post.commentContent.map((value,key) => {
+                                            return <span key={"comment" + key}>
+                                            <span style={{fontWeight:"bold"}}>{post.user.username}: </span>{value}</span> 
+                                        })}
+                                    </div> 
+                                    <br/>
+                                    <div className="comments">
+                                        <FormControl className="control">
+                                            <InputLabel htmlFor="movieName">Add a comment</InputLabel>
+                                            <Input comment={this.state.comment} onChange={this.commentChangeHandler} />
+                                        </FormControl>
+                                        <Button variant="contained" color="primary" style={{marginLeft:20}} onClick={() => this.addCommentHandler(post.id)}>
+                                            ADD
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </div>   
+                        </Card>
+                        ))}
 
+                    </div>
                 </div>
+                : this.props.history.push('/') }
             </div>
         );
     }
