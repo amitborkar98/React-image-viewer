@@ -20,6 +20,7 @@ class Home extends Component{
         super();
         this.state={
             endpoint1: [],
+            endpoint2: [],
             likeIcon: "dispBlock",
             likedIcon: "dispNone",
             comment: "",
@@ -28,10 +29,10 @@ class Home extends Component{
     }
 
     UNSAFE_componentWillMount(){
-        let data = null;
-        let xhr = new XMLHttpRequest();
+        let data1 = null;
+        let xhr1 = new XMLHttpRequest();
         let that = this;
-        xhr.addEventListener("readystatechange", function () {
+        xhr1.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {     
                 let list = JSON.parse(this.responseText).data;        
                 for(let i in list){
@@ -49,8 +50,21 @@ class Home extends Component{
                 //console.log(that.state.endpoint1);
             }
         });
-        xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
-        xhr.send(data);
+        xhr1.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
+        xhr1.send(data1);
+        
+        let data2 = null;
+        let xhr2 = new XMLHttpRequest();
+        xhr2.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {   
+                that.setState({
+                    endpoint2 : JSON.parse(this.responseText).data
+                });
+                //console.log(that.state.endpoint2);
+            }
+        });
+        xhr2.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
+        xhr2.send(data2);
     }
 
     likeClickHandler=(id)=>{
@@ -105,7 +119,8 @@ class Home extends Component{
     render(){
         return(
             <div>
-                <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback}/>
+                <Header more="true" list={this.state.postList} callbackFromHome={this.myCallback} 
+                pic={this.state.endpoint2.profile_picture}/>
                 <div className="container">
                     {this.state.endpoint1.map(post => (
                     <Card className="cards-layout" key={"post" + post.id}>
@@ -148,8 +163,8 @@ class Home extends Component{
                                     </div>
                                     <span style={{marginLeft:10, marginBottom:8}}>
                                         {
-                                        post.likes.count < 2 ? <div>{parseInt(post.likes.count)} like </div> :
-                                        <div>{parseInt(post.likes.count)} likes</div>
+                                        post.likes.count < 2 ? <div>{post.likes.count} like </div> :
+                                        <div>{post.likes.count} likes</div>
                                         }
                                     </span>
                                 </div>

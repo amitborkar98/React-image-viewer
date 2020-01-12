@@ -33,30 +33,7 @@ const styles = theme => ({
 });
 
 class Header extends Component{
-    
-    constructor(){
-        super();
-        this.state={
-            endpoint2: [] 
-        }
-    }
-
-    UNSAFE_componentWillMount(){
-        let data = null;
-        let xhr = new XMLHttpRequest();
-        let that = this;
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {   
-                that.setState({
-                    endpoint2 : JSON.parse(this.responseText).data
-                });
-                //console.log(that.state.endpoint2);
-            }
-        });
-        xhr.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
-        xhr.send(data);
-    }
-    
+     
     inputChangeHandler = (e) => {
         let newList=[];        
         for(let i in this.props.list){
@@ -64,7 +41,6 @@ class Header extends Component{
                 newList.push(this.props.list[i]);
            }
         }
-        console.log(newList);
         this.props.callbackFromHome(newList);
     }
     
