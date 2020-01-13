@@ -15,7 +15,8 @@ const styles = theme => ({
         borderRadius: '4px',
         marginLeft: 0,
         width: '300px',
-        float: 'right'
+        float: 'right',
+        marginTop: '17px'
       },
       searchIcon: {
         width: theme.spacing(7),
@@ -106,8 +107,9 @@ class Header extends Component{
                     {this.props.more === "true" ?
                         <div>
                             <div className="pro-pic">   
-                                <IconButton size="medium" style={{backgroundColor:"yellow"}} onClick={this.openHandler} >
-                                R </IconButton>  
+                                <IconButton  onClick={this.openHandler} className="icon" >
+                                    <img src={this.props.pic} alt="profile" className="profile-image"></img> 
+                                </IconButton>  
                             </div> 
                             <StyledMenu
                                 id="customized-menu"

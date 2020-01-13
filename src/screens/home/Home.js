@@ -143,7 +143,7 @@ class Home extends Component{
                                     <CardHeader 
                                         avatar={
                                         <Avatar aria-label="recipe" className="avatar">
-                                        <img src ={post.user.profile_picture} alt={post.username}/>
+                                        <img src ={post.user.profile_picture} alt={post.username} className="img"/>
                                         </Avatar>
                                         }
                                         title={post.user.username}

@@ -1,21 +1,31 @@
 .app-header {
     background-color: #263238;
-    height: 36px;
-    padding: 15px 20px;
+    height: 70px;
 }
 
 .logo{
     color: #fff;
     font-size: 18px;
     float: left;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .pro-pic{
     float: right;
-    margin-left:20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-left:10px;
+    margin-right: 10px;
 }
 
+.icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-image{
+    border-radius: 50%;
+    height: 45px;
+    width: 35px;
+}

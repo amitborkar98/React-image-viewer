@@ -20,7 +20,8 @@
     align-items: center;
 }
 
-img{
+.img{
+    border-radius: 50%;
     height: 80px;
     width: 45px;
 }
