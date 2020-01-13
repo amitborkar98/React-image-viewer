@@ -33,3 +33,27 @@
     margin-top: 10px;
 }
 
+.modal{
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    height: 80%;
+    background-color: #fff;
+    color: #333;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;   
+}
