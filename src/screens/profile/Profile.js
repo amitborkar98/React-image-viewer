@@ -58,8 +58,12 @@ class Profile extends Component{
     render(){
         return(
             <div>
-                <Header/>
-                Profile Page
+                {sessionStorage.getItem("access-token")!==null ?
+                <div>
+                    <Header/>
+                    Profile Page
+                </div>
+                : this.props.history.push('/') }
             </div>
         );
     }
