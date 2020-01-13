@@ -107,7 +107,7 @@ class Header extends Component{
         return(
             <div>
                 <header className="app-header">
-                    <span className="logo" style={ this.props.heading === "true" ? {cursor:"pointer"} : null}  onClick={this.props.heading === "true" ? this.logoHandler : null} >Image Viewer</span>
+                    <span className="logo" style={ this.props.heading === "true" ? {cursor:"pointer"} : null} onClick={this.props.heading === "true" ? this.logoHandler : null} >Image Viewer</span>
                     {this.props.more === "true" || this.props.heading === "true" ?
                         <div>
                             
