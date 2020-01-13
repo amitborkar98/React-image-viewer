@@ -58,9 +58,9 @@ class Profile extends Component{
     render(){
         return(
             <div>
-                {sessionStorage.getItem("access-token")!==null ?
+                { sessionStorage.getItem("access-token")!==null ?
                 <div>
-                    <Header/>
+                    <Header heading="true" history={this.props.history} pic={this.state.endpoint2.profile_picture} />
                     Profile Page
                 </div>
                 : this.props.history.push('/') }

@@ -98,19 +98,28 @@ class Header extends Component{
         this.props.history.push('/');
     }
 
+    logoHandler = () => {
+        this.props.history.push('/home');
+    }
+
     render(){
         const { classes } = this.props;
         return(
             <div>
                 <header className="app-header">
-                    <span className="logo">Image Viewer</span>
-                    {this.props.more === "true" ?
+                    <span className="logo" style={ this.props.heading === "true" ? {cursor:"pointer"} : null}  onClick={this.props.heading === "true" ? this.logoHandler : null} >Image Viewer</span>
+                    {this.props.more === "true" || this.props.heading === "true" ?
                         <div>
+                            
+                            { this.props.heading === "true" || this.props.more === "true" ? 
                             <div className="pro-pic">   
                                 <IconButton  onClick={this.openHandler} className="icon" >
                                     <img src={this.props.pic} alt="profile" className="profile-image"></img> 
                                 </IconButton>  
                             </div> 
+                            : "" }
+
+                            { this.props.heading === "true" || this.props.more === "true" ? 
                             <StyledMenu
                                 id="customized-menu"
                                 anchorEl={this.state.type}
@@ -118,15 +127,25 @@ class Header extends Component{
                                 open={Boolean(this.state.type)}
                                 onClose={this.closeHandler}
                             >
-                                <StyledMenuItem>
-                                    <ListItemText primary="My Account" onClick={this.accountHandler}/> 
-                                </StyledMenuItem>
-                                <hr style={{marginLeft:15,marginRight:15}}/>
-                                <StyledMenuItem>
-                                    <ListItemText primary="Logout" onClick={this.logoutHandler} />
-                                </StyledMenuItem>
+                                { this.props.heading === "true" || this.props.more === "true" ? 
+                                <div>
+                                    { this.props.more === "true" ? 
+                                    <div>
+                                        <StyledMenuItem>
+                                            <ListItemText primary="My Account" onClick={this.accountHandler}/> 
+                                        </StyledMenuItem>
+                                    <hr style={{marginLeft:15,marginRight:15}}/>
+                                    </div>
+                                    : "" }
+                                    <StyledMenuItem>
+                                        <ListItemText primary="Logout" onClick={this.logoutHandler} />
+                                    </StyledMenuItem>
+                                </div>
+                                : "" }
                             </StyledMenu>
+                            : "" }
 
+                            {this.props.more === "true" ?
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon />
@@ -141,6 +160,8 @@ class Header extends Component{
                                     onChange={this.inputChangeHandler}
                                 />
                             </div>
+                            : "" }
+
                         </div>
                      : ""}
                 </header>
