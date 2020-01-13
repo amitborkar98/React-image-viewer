@@ -110,7 +110,7 @@ class Home extends Component{
             postList.forEach(function(post){
                 if(post.id === id){
                     post.commentContent.push(this.state.comment);
-                    this.setState({comment: ""});
+                    this.setState({ comment: "" });
                 }
             }, this);
         }
@@ -184,7 +184,8 @@ class Home extends Component{
                                     <div className="comments">
                                         <FormControl className="control">
                                             <InputLabel htmlFor="movieName">Add a comment</InputLabel>
-                                            <Input comment={this.state.comment} onChange={this.commentChangeHandler} />
+                                            <Input comment={this.state.comment} onChange={this.commentChangeHandler} value={this.state.comment}>
+                                            </Input>
                                         </FormControl>
                                         <Button variant="contained" color="primary" style={{marginLeft:20}} onClick={() => this.addCommentHandler(post.id)}>
                                             ADD
