@@ -287,13 +287,13 @@ class Profile extends Component{
                                 aria-describedby="simple-modal-description" >
                                 <div style={getModalStyle()} className={classes.paper}>
                                     <div className="post-modal-container">
-                                        <div style={{marginRight:"50px"}}>
-                                            <img  src={this.state.url} alt="s" height="100%"  width="100%" ></img>
+                                        <div style={{marginRight:"10px"}}>
+                                            <img  src={this.state.url} alt="s" height="90%"  width="100%" ></img>
                                         </div>
-                                        <div className="post-modal-content-container">
+                                        <div>
                                             <div className="post-modal-header">
                                                 <Avatar aria-label="recipe" className="avatar">
-                                                    <img src ={this.state.picture} alt={this.state.username} className="img" />
+                                                    <img src ={this.state.picture} alt={this.state.username} className="post-modal-avatar-img" />
                                                 </Avatar>
                                                 <Typography variant="body1" component="p" style={{marginLeft:"20px"}}>
                                                     {this.state.username}
@@ -328,8 +328,8 @@ class Profile extends Component{
                                                     }
                                                 </span>  
                                             </div>
-                                            <div className="post-modal-commentsa">
-                                                <FormControl className="post-modal-controla">
+                                            <div className="post-modal-comments">
+                                                <FormControl className="post-modal-control">
                                                     <InputLabel htmlFor="comment">Add a comment</InputLabel>
                                                     <Input comment={this.state.comment} onChange={this.commentChangeHandler} value={this.state.comment} />
                                                 </FormControl>
