@@ -49,3 +49,51 @@
     color: red;   
 }
 
+.post-modal-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.post-modal-content-container{
+    margin-right: 200px;
+}
+
+.img{
+    border-radius: 50%;
+    height: 80px;
+    width: 45px;
+}
+
+.post-modal-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-modal-hastag{
+    color: lightskyblue;
+    display: flex;
+    flex-direction: row;
+}
+
+.post-modal-likes{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0px 0px 0px;
+}
+
+.post-modal-comments-section{
+    display: flex;
+    flex-direction: column;
+}
+
+.post-modal-comments{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-modal-control{
+    width: 900px;
+}
