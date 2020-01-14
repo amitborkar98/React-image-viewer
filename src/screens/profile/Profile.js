@@ -11,7 +11,9 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { withStyles } from '@material-ui/core/styles';
-  
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+
 function getModalStyle() {
     const top = 50 ;
     const left = 50 ;  
@@ -29,7 +31,23 @@ const styles = theme => ({
       boxShadow: theme.shadows[5],
       padding: '20px'
     },
+
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+      },
+      gridList: {
+        width: '95%',
+        height: 750,
+        cursor: 'pointer',
+        overflow:'hidden'
+      },
   });
+
+
 
 class Profile extends Component{
 
@@ -152,9 +170,9 @@ class Profile extends Component{
                                     </Fab>
                                 </div>
                             </div>
-                            <Modal open={this.state.modelOpen} onClose={this.editModalCloseHander} className="modall"
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description" >
+                            <Modal open={this.state.modelOpen} onClose={this.editModalCloseHander} 
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description" >
                                 <div style={getModalStyle()} className={classes.paper}>
                                 <Typography variant="h5" component="h1" style={{marginBottom:'25px'}}>
                                     Edit
@@ -171,6 +189,18 @@ class Profile extends Component{
                                 </div>
                             </Modal>
                         </div>
+                        <div className="body-content">
+                            <div className={classes.root}>
+                                <GridList cellHeight={400} className={classes.gridList} cols={3}>
+                                    {this.state.endpoint1.map(tile => (
+                                    <GridListTile key={"grid"+ tile.id} >
+                                        <img src={tile.images.standard_resolution.url} alt={tile.user.full_name} />
+                                    </GridListTile>
+                                    ))}
+                                </GridList>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 : this.props.history.push('/') }
