@@ -62,7 +62,9 @@ class Profile extends Component{
             modelOpen: false,
             usernameRequired: 'dispNone',
             name: "",
-            full_name:""
+            full_name:"",
+            open: false,
+            postContent:{}
         }
     }
 
@@ -85,7 +87,6 @@ class Profile extends Component{
                 that.setState({
                     postList : list
                 });
-                console.log(list);
             }
         });
         if(sessionStorage.getItem("access-token")!==null){
@@ -128,8 +129,21 @@ class Profile extends Component{
         this.setState({ name: e.target.value });
     }
 
-    editNameHandler = () =>{
+    editNameHandler = () => {
         this.state.name === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ full_name: this.state.name, modelOpen: false })
+    }
+
+    postModalOpenHandler = (id) => {
+        this.setState({ open: true });
+        let currentState = this.state;
+        currentState.postContent = this.state.endpoint1.filter((post) => {
+            return post.id === id
+        })[0];
+        console.log(this.state.postContent);
+    }
+
+    postModalCloseHandler = () => {
+        this.setState({ open: false });
     }
 
     render(){
@@ -192,15 +206,21 @@ class Profile extends Component{
                         <div className="body-content">
                             <div className={classes.root}>
                                 <GridList cellHeight={400} className={classes.gridList} cols={3}>
-                                    {this.state.endpoint1.map(tile => (
-                                    <GridListTile key={"grid"+ tile.id} >
-                                        <img src={tile.images.standard_resolution.url} alt={tile.user.full_name} />
+                                    {this.state.endpoint1.map(post => (
+                                    <GridListTile key={"grid"+ post.id} onClick={()=>this.postModalOpenHandler(post.id)}>
+                                        <img src={post.images.standard_resolution.url} alt={post.user.full_name} />
                                     </GridListTile>
                                     ))}
                                 </GridList>
                             </div>
+                            <Modal open={this.state.open} onClose={this.postModalCloseHandler} 
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description" >
+                                <div style={getModalStyle()} className={classes.paper}>
+                                        
+                                </div>
+                            </Modal>
                         </div>
-
                     </div>
                 </div>
                 : this.props.history.push('/') }
