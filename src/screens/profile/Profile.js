@@ -74,9 +74,9 @@ class Profile extends Component{
             likeIcon: "",
             likedIcon: "",
             likesCount:0,
-            id:"",
+            id: "",
             commentContent: [],
-            comment:""
+            comment: ""
         }
     }
 
@@ -88,16 +88,19 @@ class Profile extends Component{
             if (this.readyState === 4) {     
                 let list = JSON.parse(this.responseText).data;        
                 for(let i in list){
+                   //adding key-value pairs in the object so that every post has a unique like and comment section
                     list[i].likeIcon = "dispBlock";
                     list[i].likedIcon = "dispNone";
                     list[i].commentContent = [];
                 }
+                //storing the endpoint response in state arrays
                 that.setState({
-                    endpoint1 : list 
+                    endpoint1: list 
                 });
             }
         });
-        if(sessionStorage.getItem("access-token")!==null){
+        //if access token is not equal to null call the instagram api
+        if(sessionStorage.getItem("access-token") !== null){
         xhr1.open("GET", "https://api.instagram.com/v1/users/self/media/recent/?access_token="+sessionStorage.getItem('access-token'));
         xhr1.send(data1);
         }
@@ -105,98 +108,116 @@ class Profile extends Component{
         let data2 = null;
         let xhr2 = new XMLHttpRequest();
         xhr2.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {   
+            if (this.readyState === 4) {  
+                //storing the endpoint response in state variables and arrays 
                 that.setState({
-                    endpoint2 : JSON.parse(this.responseText).data,
-                    count : JSON.parse(this.responseText).data.counts.media,
-                    follows : JSON.parse(this.responseText).data.counts.follows,
-                    followed : JSON.parse(this.responseText).data.counts.followed_by,
+                    endpoint2: JSON.parse(this.responseText).data,
+                    count: JSON.parse(this.responseText).data.counts.media,
+                    follows: JSON.parse(this.responseText).data.counts.follows,
+                    followed: JSON.parse(this.responseText).data.counts.followed_by,
                     full_name: JSON.parse(this.responseText).data.full_name, 
                 });
             }
         });
-        if(sessionStorage.getItem("access-token")!==null){
+        //if access token is not equal to null call the instagram api
+        if(sessionStorage.getItem("access-token") !== null){
         xhr2.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+sessionStorage.getItem('access-token'));
         xhr2.send(data2);
         }
     }
 
+    //function to open the modal for editing the name of the user
     editModalOpenHander = () => {
         this.setState({ 
             modelOpen: true,
-            usernameRequired : 'dispNone',
-            name : ""
+            usernameRequired: 'dispNone',
+            name: ""
         });
     }
 
+    //function to close the modal for editing the name of the user
     editModalCloseHander = () => {
         this.setState({ modelOpen: false });
     }
 
+    //function to handle the input change event
     inputNameChangeHandler = (e) => {
         this.setState({ name: e.target.value });
     }
 
+    //function to edit the name of the user
     editNameHandler = () => {
+        //if the input field is empty display the required message or else set fullname of the user and close the modal
         this.state.name === "" ? this.setState({ nameRequired: "dispBlock" }) : this.setState({ full_name: this.state.name, modelOpen: false })
     }
 
+    //function to open the modal for displaying a post
     postModalOpenHandler = (id) => {
         this.setState({ open: true });
+        //filter the post according to the id and display it
         let currentState = this.state;
         currentState.postContent = this.state.endpoint1.filter((post) => {
             return post.id === id
         })[0];
         this.setState({ 
-            url : this.state.postContent.images.standard_resolution.url ,
-            username : this.state.postContent.user.username ,
-            picture : this.state.postContent.user.profile_picture,
-            caption : this.state.postContent.caption.text,
+            url: this.state.postContent.images.standard_resolution.url ,
+            username: this.state.postContent.user.username ,
+            picture: this.state.postContent.user.profile_picture,
+            caption: this.state.postContent.caption.text,
             tags: this.state.postContent.tags,
-            likeIcon : this.state.postContent.likeIcon,
-            likedIcon : this.state.postContent.likedIcon,
-            likesCount : this.state.postContent.likes.count,
-            id : this.state.postContent.id,
-            commentContent : this.state.postContent.commentContent
+            likeIcon: this.state.postContent.likeIcon,
+            likedIcon: this.state.postContent.likedIcon,
+            likesCount: this.state.postContent.likes.count,
+            id: this.state.postContent.id,
+            commentContent: this.state.postContent.commentContent
         });
     }
 
+    //function to close the modal for displaying post
     postModalCloseHandler = () => {
         this.setState({ open: false });
     }
     
-    likeClickHandler=(id)=>{
+    likeClickHandler = (id) => {
         let postList = this.state.endpoint1;
         postList.forEach(function(post){
+            // if the post id equal to the liked post id then display the likedIcon, hide the likeIcon, and increment like count by 1  
             if(post.id === id){
                 post.likes.count += 1;
                 post.likeIcon = "dispNone";
                 post.likedIcon = "dispBlock";
-                this.setState({likeIcon: "dispNone"});
-                this.setState({likedIcon: "dispBlock"});
-                this.setState({ likesCount: post.likes.count })
+                this.setState({likeIcon: "dispNone",
+                    likedIcon: "dispBlock",
+                    likesCount: post.likes.count
+                });
             }
         }, this);
     }
 
-    likedClickHandler=(id)=>{
+    //function to add a like to a post
+    likedClickHandler = (id) => {
         let postList = this.state.endpoint1;
         postList.forEach(function(post){
+            // if the post id equal to the liked post id then display the likeIcon, hide the likedIcon, and decrement like count by 1  
             if(post.id === id){
                 post.likes.count -= 1;
                 post.likeIcon = "dispBlock";
                 post.likedIcon = "dispNone";
-                this.setState({likeIcon: "dispBlock"});
-                this.setState({likedIcon: "dispNone"});
-                this.setState({ likesCount: post.likes.count })
+                this.setState({
+                    likeIcon: "dispBlock", 
+                    likedIcon: "dispNone", 
+                    likesCount: post.likes.count 
+                });
             }
         }, this);
     }
 
+    //function to handle the input change event
     commentChangeHandler = (e) => {
-        this.setState({ comment : e.target.value });
+        this.setState({ comment: e.target.value });
     }
 
+    //funtion to add a comment
     addCommentHandler = (id) =>{
         if(this.state.comment === ""){
             alert("Cannot add Empty comment");
@@ -204,11 +225,12 @@ class Profile extends Component{
         else{
             let postList=this.state.endpoint1;
             postList.forEach(function(post){
+                //if the post id is equal to the commented post id, then add the comment in the commentContent array 
                 if(post.id === id){
                     post.commentContent.push(this.state.comment);
                     this.setState({ 
                         comment: "" ,
-                        commentContent : post.commentContent
+                        commentContent: post.commentContent
                     });     
                 }
             }, this);
@@ -219,13 +241,14 @@ class Profile extends Component{
         const { classes } = this.props;
         return(
             <div>
-                { sessionStorage.getItem("access-token")!==null ?
+                {/* display the contents only if the user is logged in */}
+                {sessionStorage.getItem("access-token") !== null ?
                 <div>
                     <Header heading="true" history={this.props.history} pic={this.state.endpoint2.profile_picture} />
                     <div className="profile-container">
                         <div className="profile-header">
                             <div className="header-image">
-                                <img src ={this.state.endpoint2.profile_picture} alt={this.state.endpoint2.username} style={{borderRadius:"50%"}}/>
+                                <img src={this.state.endpoint2.profile_picture} alt={this.state.endpoint2.username} style={{borderRadius:"50%"}}/>
                             </div>
                             <div className="profile-header-content1">
                                 <div>
@@ -234,10 +257,10 @@ class Profile extends Component{
                                     </Typography>
                                 </div>
                                 <div className="profile-header-content2">
-                                    <Typography variant="body1" component="h1" style={{marginRight:"80px"}}>
+                                    <Typography variant="body1" component="h1" style={{marginRight: "80px"}}>
                                         Posts: {this.state.count}
                                     </Typography>
-                                    <Typography variant="body1" component="h1" style={{marginRight:"80px"}}>
+                                    <Typography variant="body1" component="h1" style={{marginRight: "80px"}}>
                                         Follows: {this.state.follows}
                                     </Typography>
                                     <Typography variant="body1" component="h1">
@@ -245,7 +268,7 @@ class Profile extends Component{
                                     </Typography>
                                 </div>
                                 <div className="profile-header-content3">
-                                    <Typography variant="h6" component="h1" style={{marginRight:"20px"}}>
+                                    <Typography variant="h6" component="h1" style={{marginRight: "20px"}}>
                                         {this.state.full_name}
                                     </Typography>
                                     <Fab color="secondary" aria-label="edit" onClick={this.editModalOpenHander}>
@@ -253,11 +276,12 @@ class Profile extends Component{
                                     </Fab>
                                 </div>
                             </div>
+                            {/* Edit fullname modal */}
                             <Modal open={this.state.modelOpen} onClose={this.editModalCloseHander} 
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description" >
                                 <div style={getModalStyle()} className={classes.paper}>
-                                <Typography variant="h5" component="h1" style={{marginBottom:'25px'}}>
+                                <Typography variant="h5" component="h1" style={{marginBottom: '25px'}}>
                                     Edit
                                 </Typography>
                                 <FormControl required>
@@ -274,44 +298,49 @@ class Profile extends Component{
                         </div>
                         <div className="body-content">
                             <div className={classes.root}>
+                                {/* display all the user post images */}
                                 <GridList cellHeight={400} className={classes.gridList} cols={3}>
                                     {this.state.endpoint1.map(post => (
-                                    <GridListTile key={"grid"+ post.id} onClick={()=>this.postModalOpenHandler(post.id)}>
+                                    <GridListTile key={"grid" + post.id} onClick={()=>this.postModalOpenHandler(post.id)}>
                                         <img src={post.images.standard_resolution.url} alt={post.user.full_name} />
                                     </GridListTile>
                                     ))}
                                 </GridList>
                             </div>
+                            {/* Open post modal */}
                             <Modal open={this.state.open} onClose={this.postModalCloseHandler} 
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description" >
                                 <div style={getModalStyle()} className={classes.paper}>
                                     <div className="post-modal-container">
                                         <div style={{marginRight:"10px"}}>
-                                            <img  src={this.state.url} alt="s" height="90%"  width="100%" ></img>
+                                            <img src={this.state.url} alt={this.state.username} height="90%"  width="100%"></img>
                                         </div>
                                         <div>
                                             <div className="post-modal-header">
                                                 <Avatar aria-label="recipe" className="avatar">
                                                     <img src ={this.state.picture} alt={this.state.username} className="post-modal-avatar-img" />
                                                 </Avatar>
-                                                <Typography variant="body1" component="p" style={{marginLeft:"20px"}}>
+                                                <Typography variant="body1" component="p" style={{marginLeft: "20px"}}>
                                                     {this.state.username}
                                                 </Typography>
                                             </div>
                                             <hr/>
+                                            {/* display a string in the caption till it reaches #(hashtags) */}
                                             <Typography variant="body1" component="p">
-                                                { this.state.caption.slice(0,this.state.caption.search('#')) }
+                                                {this.state.caption.slice(0, this.state.caption.search('#'))}
                                             </Typography>
                                             <Typography variant="body2" component="p" className="post-modal-hastag">
+                                                {/* display the hashtags in the tags array */}
                                                 {this.state.tags.map((value,key) => {
-                                                    return <span key={"tag" + key} style={{marginRight:5}}>#{value} </span> 
+                                                    return <span key={"tag" + key} style={{marginRight: 5}}> #{value} </span> 
                                                 })}
                                             </Typography> 
+                                            {/* display the comments in the commentContent array */}
                                             <div className="post-modal-comments-section">
                                                 { this.state.commentContent.map((value,key) => {
                                                     return <span key={"comment" + key}>
-                                                    <span style={{fontWeight:"bold"}}>{this.state.username}: </span>{value}</span> 
+                                                    <span style={{fontWeight: "bold"}}>{this.state.username}: </span>{value}</span> 
                                                 })}
                                             </div> 
                                             <div className="post-modal-likes">
@@ -321,10 +350,9 @@ class Profile extends Component{
                                                 <div className={this.state.likedIcon}>
                                                     <FavoriteIcon style={{color:"red"}} onClick={() => this.likedClickHandler(this.state.id)}/>
                                                 </div>
-                                                <span style={{marginLeft:10, marginBottom:8}}>
+                                                <span style={{marginLeft: 10, marginBottom: 8}}>
                                                     {
-                                                    this.state.likesCount < 2 ? <div>{this.state.likesCount} like </div> :
-                                                    <div>{this.state.likesCount} likes</div>
+                                                    this.state.likesCount < 2 ? <div>{this.state.likesCount} like </div> : <div>{this.state.likesCount} likes</div>
                                                     }
                                                 </span>  
                                             </div>
@@ -344,7 +372,7 @@ class Profile extends Component{
                         </div>
                     </div>
                 </div>
-                : this.props.history.push('/') }
+                : this.props.history.push('/')}
             </div>
         );
     }

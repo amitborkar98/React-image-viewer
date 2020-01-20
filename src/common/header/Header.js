@@ -71,33 +71,41 @@ class Header extends Component{
         }
     }
 
+    //function to change the state of the search box to filter the posts according to their caption
     inputChangeHandler = (e) => {
         let newList=[];        
         for(let i in this.props.list){
-            if(this.props.list[i].caption.text.slice(0,this.props.list[i].caption.text.search('#')).search(e.target.value) > -1){
+            //if searched text is present in the caption of the post, that post is stored in the newList array 
+            if(this.props.list[i].caption.text.slice(0, this.props.list[i].caption.text.search('#')).search(e.target.value) > -1){
                 newList.push(this.props.list[i]);
            }
         }
+        //filtered posts are passed back to the Home component
         this.props.callbackFromHome(newList);
     }
     
+    //function to open the dropdown menu
     openHandler = (e) => {
         this.setState({ type: e.currentTarget });
     }
     
+    //function to close the dropdown menu
     closeHandler = () => {
         this.setState({ type: null });
     }
     
+    //function to redirect to the profile page
     accountHandler = () => {
         this.props.history.push('/profile');
     }
 
+    //function to clear the session storage and redirect to the login page
     logoutHandler = () => {
         sessionStorage.removeItem("access-token");  
         this.props.history.push('/');
     }
 
+    //function to redirect to the home page
     logoHandler = () => {
         this.props.history.push('/home');
     }
@@ -107,19 +115,18 @@ class Header extends Component{
         return(
             <div>
                 <header className="app-header">
-                    <span className="logo" style={ this.props.heading === "true" ? {cursor:"pointer"} : null} onClick={this.props.heading === "true" ? this.logoHandler : null} >Image Viewer</span>
+                    {/* conditional rendering of the header components according to the props */}
+                    <span className="logo" style={this.props.heading === "true" ? {cursor:"pointer"} : null} onClick={this.props.heading === "true" ? this.logoHandler : null} >Image Viewer</span>
                     {this.props.more === "true" || this.props.heading === "true" ?
                         <div>
-                            
-                            { this.props.heading === "true" || this.props.more === "true" ? 
+                            {this.props.heading === "true" || this.props.more === "true" ? 
                             <div className="pro-pic">   
                                 <IconButton  onClick={this.openHandler} className="icon" >
-                                    <img src={this.props.pic} alt="profile" className="profile-image"></img> 
+                                    <img src={this.props.pic} alt="pic" className="profile-image"></img> 
                                 </IconButton>  
                             </div> 
-                            : "" }
-
-                            { this.props.heading === "true" || this.props.more === "true" ? 
+                            : ""}
+                            {this.props.heading === "true" || this.props.more === "true" ? 
                             <StyledMenu
                                 id="customized-menu"
                                 anchorEl={this.state.type}
@@ -127,24 +134,23 @@ class Header extends Component{
                                 open={Boolean(this.state.type)}
                                 onClose={this.closeHandler}
                             >
-                                { this.props.heading === "true" || this.props.more === "true" ? 
+                                {this.props.heading === "true" || this.props.more === "true" ? 
                                 <div>
-                                    { this.props.more === "true" ? 
+                                    {this.props.more === "true" ? 
                                     <div>
                                         <StyledMenuItem>
                                             <ListItemText primary="My Account" onClick={this.accountHandler}/> 
                                         </StyledMenuItem>
                                     <hr style={{marginLeft:15,marginRight:15}}/>
                                     </div>
-                                    : "" }
+                                    : ""}
                                     <StyledMenuItem>
                                         <ListItemText primary="Logout" onClick={this.logoutHandler} />
                                     </StyledMenuItem>
                                 </div>
-                                : "" }
+                                : ""}
                             </StyledMenu>
-                            : "" }
-
+                            : ""}
                             {this.props.more === "true" ?
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
@@ -160,8 +166,7 @@ class Header extends Component{
                                     onChange={this.inputChangeHandler}
                                 />
                             </div>
-                            : "" }
-
+                            : ""}
                         </div>
                      : ""}
                 </header>

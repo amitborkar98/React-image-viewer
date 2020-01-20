@@ -23,21 +23,25 @@ class Login extends Component{
         }
     }
 
+    //function to change the state of username
     usernameChangeHandler = (e) => {
         this.setState({ username: e.target.value });
     }
 
+    //function to change the state of password
     passwordChangeHandler = (e) => {
         this.setState({ password: e.target.value });
     }
 
+    //function to handle the login
     loginClickHandler = () => {
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
         let password = "password";
         let username = "username";
         let token = "8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784";
-        if (this.state.password === password && this.state.username === username) {
+        //if the password and username are correct, access token is set and redirected to the home page else incorrect username or password message is displayed
+        if(this.state.password === password && this.state.username === username){
             sessionStorage.setItem("access-token", token);
             this.props.history.push('home');
           }
@@ -63,7 +67,7 @@ class Login extends Component{
                                     <Typography gutterBottom variant="h5" component="h2">
                                         LOGIN
                                     </Typography>
-                                    <br />
+                                    <br/>
                                     <div className="input">
                                     <FormControl required>
                                         <InputLabel htmlFor="username">Username</InputLabel>
